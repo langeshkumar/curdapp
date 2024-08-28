@@ -12,6 +12,41 @@ const db = mysql2.createConnection({
     database: 'details'
 });
 
+app.get('/', (req, res) => {
+    const sql = 'SELECT * FROM employee';
+    db.query(sql, (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result);
+    })
+})
+
+app.post('/create', (req, res) => {
+    const sql = "INSERT INTO employee (`emp_name`, `emp_desc`, `salary`, `branch_id`) VALUES (?, ?, ?, ?)";
+    db.query(sql, [req.body.name, req.body.position, req.body.salary, req.body.branch], (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result);
+    })
+})
+
+app.get('/view/:id', (req, res) => {
+    const sql = "SELECT * FROM employee WHERE emp_id = ?";
+    const id = req.params.id;
+    db.query(sql, [id], (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result);
+    })
+})
+
+app.put('/update/:id', (req, res) => {
+    const sql = "UPDATE employee SET `emp_name` = ?, `emp_desc` = ?, `salary` = ?, `branch_id` = ? WHERE `emp_id` = ?";
+    const id = req.params.id;
+
+    db.query(sql, [req.body.name, req.body.position, req.body.salary, req.body.branch, id], (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result);
+    })
+})
+
 app.listen(8081, () => {
     console.log('Listening...');
 })
