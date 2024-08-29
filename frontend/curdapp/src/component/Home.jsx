@@ -13,6 +13,19 @@ function Home() {
             .catch(err => console.log(err))
     })
 
+    const navigate = useNavigate()
+
+    const handleDelete = (id) => {
+        axios.delete('http://localhost:8081/delete/' + id)
+            .then((res) => {
+                if (res.data.delete) {
+                    navigate('/')
+                } else {
+                    console.log('Somethink went wrong');
+                }
+            })
+    }
+
     let i = 1;
 
     return (
@@ -52,7 +65,7 @@ function Home() {
                                         <td>
                                             <Link to={`/view/${val.emp_id}`} className='btn btn-secondary btn-sm me-2'>View</Link>
                                             <Link to={`/edit/${val.emp_id}`} className='btn btn-warning btn-sm me-2'>Edit</Link>
-                                            <button className='btn btn-danger btn-sm'>Delete</button>
+                                            <button onClick={e => handleDelete(val.emp_id)} className='btn btn-danger btn-sm'>Delete</button>
                                         </td>
                                     </tr>
                                 )

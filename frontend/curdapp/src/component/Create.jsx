@@ -11,9 +11,16 @@ function Create() {
 
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
         axios.post('http://localhost:8081/create/', { name, position, salary, branch })
-            .then(res => console.log(res))
+            .then((res) => {
+                if (res.data.create) {
+                    navigate('/')
+                } else {
+                    console.log('Somethink went wrong');
+                }
+            })
             .catch(err => console.log(err))
     }
 

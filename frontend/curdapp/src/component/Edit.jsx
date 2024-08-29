@@ -27,8 +27,12 @@ function Edit() {
     const handleSumbit = (e) => {
         e.preventDefault()
         axios.put('http://localhost:8081/update/' + id, { name, position, salary, branch })
-            .then(res => {
-                navigate('/')
+            .then((res) => {
+                if (res.data.update) {
+                    navigate('/')
+                } else {
+                    console.log('Somethink went wrong');
+                }
             })
             .catch(err => console.log(err))
     }
